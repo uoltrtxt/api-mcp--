@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Advanced Panel (CEP)</title>
+  <script src="../js/CSInterface.js"></script>
+  <script src="../js/chatApi.js"></script>
+  <style>
+    body { margin: 0; background: #222; color: #eee; font-family: Arial, sans-serif; padding: 10px; }
+    #chat-input { width: 100%; box-sizing: border-box; margin-bottom: 8px; padding: 6px; font-size: 14px; }
+    #chat-output { width: 100%; height: 120px; background: #333; overflow-y: auto; padding: 6px; margin-bottom: 8px; font-size: 13px; }
+    button { padding: 8px 12px; margin-right: 4px; }
+  </style>
+</head>
+<body>
+  <h3>ChatBot & Marker Panel</h3>
+  <textarea id="chat-input" rows="3" placeholder="프롬프트를 입력하세요"></textarea>
+  <div>
+    <button id="sendChat">ChatGPT 호출</button>
+    <button id="addMarker">재생헤드에 마커 추가</button>
+  </div>
+  <div id="chat-output"></div>
+
+  <script>
+    const csInterface = new CSInterface();
+    const chatInput = document.getElementById("chat-input");
+    const chatOutput = document.getElementById("chat-output");
+
+    // ChatGPT 호출 버튼
+    document.getElementById("sendChat").addEventListener("click", async () => {
+      const prompt = chatInput.value.trim();
+      if (!prompt) return;
+      chatOutput.innerHTML += `<div><strong>사용자:</strong> ${prompt}</div>`;
+      chatInput.value = "";
+
+      try {
+        const reply = await callChatGPT(prompt);
+        chatOutput.innerHTML += `<div><strong>GPT:</strong> ${reply}</div>`;
+        chatOutput.scrollTop = chatOutput.scrollHeight;
+      } catch (err) {
+        chatOutput.innerHTML += `<div style="color:red;">Error: ${err.message}</div>`;
+      }
+    });
+
+    // 마커 추가 버튼
+    document.getElementById("addMarker").addEventListener("click", () => {
+      csInterface.evalScript("addMarkerAtPlayhead()", result => {
+        if (result && result !== 'undefined') {
+          chatOutput.innerHTML += `<div style="color:lightgreen;">${result}</div>`;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

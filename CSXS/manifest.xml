@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionManifest Version="5.0"
+    ExtensionBundleId="com.yourname.adobicepapi"
+    ExtensionBundleName="어도비 cpe 및 api"
+    ExtensionBundleVersion="1.0.0">
+  <ExtensionList>
+    <Extension Id="com.yourname.adobicepapi.panel" Version="1.0.0"/>
+  </ExtensionList>
+  <ExecutionEnvironment>
+    <HostList>
+      <Host Name="AEFT" Version="[17.0,99.0]"/>
+      <Host Name="PPRO" Version="[15.0,99.0]"/>
+    </HostList>
+    <LocaleList>
+      <Locale Code="All"/>
+    </LocaleList>
+    <RequiredRuntimeList>
+      <RequiredRuntime Name="CSXS" Version="6.0"/>
+    </RequiredRuntimeList>
+  </ExecutionEnvironment>
+  <DispatchInfoList>
+    <Extension Id="com.yourname.adobicepapi.panel">
+      <DispatchInfo>
+        <Resources>
+          <MainPath>./html/index.html</MainPath>
+          <ScriptPath>./jsx/hostscript.jsx</ScriptPath>
+        </Resources>
+        <Lifecycle>
+          <AutoVisible>true</AutoVisible>
+        </Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <!-- 패널 메뉴에 보이는 이름을 한글로 변경 -->
+          <Menu>어도비 cpe 및 api</Menu>
+          <Geometry>
+            <Size>
+              <Width>400</Width>
+              <Height>300</Height>
+            </Size>
+          </Geometry>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+  </DispatchInfoList>
+</ExtensionManifest>
