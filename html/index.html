@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<!--
+  ChatBot & Marker Panel for Adobe CEP
+
+  This HTML defines the user interface for a dual‑purpose panel.  It allows
+  the user to enter an OpenAI API key, type a prompt and call the ChatGPT API
+  directly, connect to a local or remote MCP server via Server‑Sent Events or
+  WebSockets, and add a marker to the current playhead position in the
+  currently active sequence or composition.  The business logic is
+  implemented in separate JavaScript modules located in the js folder.
+-->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>어도비 cpe 및 api</title>
+    <!-- Load the CEP CSInterface library.  This file must be copied
+         from Adobe CEP resources into the js folder. -->
+    <script src="../js/CSInterface.js"></script>
+    <!-- Load our custom JavaScript modules. -->
+    <script type="module" src="../js/app.js"></script>
+    <style>
+      body {
+        margin: 0;
+        font-family: sans-serif;
+        background-color: #1e1e1e;
+        color: #e0e0e0;
+        padding: 10px;
+      }
+      h2 {
+        margin-top: 0;
+      }
+      .field {
+        margin-bottom: 8px;
+      }
+      .field label {
+        display: block;
+        margin-bottom: 4px;
+      }
+      .field input[type="text"],
+      .field input[type="password"],
+      .field textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 6px;
+        border: 1px solid #444;
+        border-radius: 4px;
+        background-color: #2c2c2c;
+        color: #e0e0e0;
+        resize: vertical;
+      }
+      .actions {
+        margin-top: 10px;
+      }
+      .actions button {
+        margin-right: 5px;
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        background-color: #007acc;
+        color: #fff;
+        cursor: pointer;
+      }
+      .actions button:disabled {
+        background-color: #444;
+        cursor: not-allowed;
+      }
+      #outputArea {
+        margin-top: 10px;
+        padding: 6px;
+        border: 1px solid #444;
+        border-radius: 4px;
+        min-height: 120px;
+        background-color: #1a1a1a;
+        overflow-y: auto;
+        white-space: pre-line;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>ChatBot &amp; Marker Panel</h2>
+    <!-- API key input field -->
+    <div class="field">
+      <label for="apiKeyInput">OpenAI API 키</label>
+      <input id="apiKeyInput" type="password" placeholder="여기에 붙여넣기" />
+    </div>
+    <!-- Prompt input field -->
+    <div class="field">
+      <label for="promptInput">프롬프트</label>
+      <textarea id="promptInput" rows="3" placeholder="AI에게 질문을 입력하세요"></textarea>
+    </div>
+    <!-- MCP URL input field -->
+    <div class="field">
+      <label for="mcpUrlInput">MCP 서버 URL (예: http://localhost:3000/sse)</label>
+      <input id="mcpUrlInput" type="text" placeholder="예: http://127.0.0.1:8000/sse" />
+    </div>
+    <!-- Buttons to perform actions -->
+    <div class="actions">
+      <button id="callGPTBtn">ChatGPT 호출</button>
+      <button id="connectMCPBtn">MCP 연결</button>
+      <button id="addMarkerBtn">재생헤드에 마커 추가</button>
+    </div>
+    <!-- Output area to display responses from GPT or MCP -->
+    <div id="outputArea"></div>
+  </body>
+</html>
