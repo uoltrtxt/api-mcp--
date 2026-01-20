@@ -9,7 +9,7 @@
   organisation. They must remain unique within your system and may
   contain only letters, numbers and dots (no spaces).
 -->
-<ExtensionManifest Version="5.0"
+<ExtensionManifest Version="7.0"
     ExtensionBundleId="com.example.mcpgptpanel"
     ExtensionBundleName="어도비 cpe 및 api"
     ExtensionBundleVersion="1.0.0">
@@ -36,9 +36,9 @@
     <LocaleList>
       <Locale Code="All" />
     </LocaleList>
-    <!-- CSXS runtime version 6.0 is compatible with CEP panels used by CC 2020+. -->
+    <!-- CSXS runtime version 12.0 targets CEP 12 (CC 2025). -->
     <RequiredRuntimeList>
-      <RequiredRuntime Name="CSXS" Version="6.0" />
+      <RequiredRuntime Name="CSXS" Version="12.0" />
     </RequiredRuntimeList>
   </ExecutionEnvironment>
   <DispatchInfoList>
@@ -56,6 +56,9 @@
           <!-- The panel will open automatically when the host application starts. -->
           <AutoVisible>true</AutoVisible>
         </Lifecycle>
+        <CEFCommandLine>
+          <Parameter>--enable-nodejs</Parameter>
+        </CEFCommandLine>
         <UI>
           <Type>Panel</Type>
           <!-- Name shown in the Window > Extensions menu. -->
