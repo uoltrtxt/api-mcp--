@@ -15,7 +15,7 @@
  * @param {string} apiKey - An OpenAI API key.  Must be valid or the API
  *   will return an authentication error.
  * @param {string} prompt - The user's prompt that will be sent to the model.
- * @param {string} [model="gpt-4o"] - Optional model name to use.
+ * @param {string} [model="gpt-5-mini"] - Optional model name to use.
  * @returns {Promise<string>} - Resolves with the assistant's reply text.
  */
 export async function callChatGPT(apiKey, prompt, model = "gpt-5-mini")
