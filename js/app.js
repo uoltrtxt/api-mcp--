@@ -4,15 +4,12 @@
  * Main controller for the CEP panel UI.  This module wires together the
  * user interface elements defined in index.html, the ChatGPT API helper
  *  * (chatApi.js), the MCP server helper, and the host
- * ExtendScript functions exposed via CSInterface.  It uses the modern
- * ES Module syntax supported in CEP panels (Chrome engine) and runs
- * inside the panel's context.
+ * ExtendScript functions exposed via CSInterface and runs inside the
+ * panel's context.
  */
 
-import { callChatGPT } from './chatApi.js';
-
 // Obtain the CSInterface object for interacting with ExtendScript
-const csInterface = new CSInterface();
+const csInterface = typeof CSInterface !== 'undefined' ? new CSInterface() : null;
 
 // Grab DOM elements
 const apiKeyInput = document.getElementById('apiKeyInput');
@@ -206,6 +203,10 @@ function saveApiKey() {
 async function handleCallGPT() {
   const apiKey = apiKeyInput.value.trim();
   const prompt = promptInput.value.trim();
+  if (typeof callChatGPT !== 'function') {
+    appendMessage('system', 'chatApi.js를 불러오지 못했습니다. 파일 경로를 확인하세요.');
+    return;
+  }
   if (!apiKey || !prompt) {
     alert('API 키와 프롬프트를 모두 입력하세요.');
     return;
@@ -234,6 +235,10 @@ async function handleCallGPT() {
  * returned message in the output area.
  */
 function handleAddMarker() {
+    if (!csInterface) {
+    appendMessage('system', 'CSInterface.js를 불러오지 못했습니다. 패널을 다시 설치하거나 경로를 확인하세요.');
+    return;
+  }
   addMarkerBtn.disabled = true;
   // The function name must match that defined in hostscript.jsx
   csInterface.evalScript('addMarkerAtPlayhead()', (result) => {
@@ -244,6 +249,10 @@ function handleAddMarker() {
 }
 
 function handleRefreshHostInfo() {
+   if (!csInterface) {
+    appendMessage('system', 'CSInterface.js를 불러오지 못했습니다. 패널을 다시 설치하거나 경로를 확인하세요.');
+    return;
+  }
   refreshHostInfoBtn.disabled = true;
   csInterface.evalScript('getHostProjectSummary()', (result) => {
     lastHostInfo = result && result !== 'undefined' ? result : '';
@@ -267,6 +276,10 @@ function handleInsertLastCode() {
 }
 
 function handleRunCode() {
+   if (!csInterface) {
+    appendMessage('system', 'CSInterface.js를 불러오지 못했습니다. 패널을 다시 설치하거나 경로를 확인하세요.');
+    return;
+  }
   const code = codeInput.value.trim();
   if (!code) {
     alert('실행할 코드를 입력하세요.');
