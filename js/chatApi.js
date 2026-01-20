@@ -18,7 +18,7 @@
  * @param {string} [model="gpt-4o"] - Optional model name to use.
  * @returns {Promise<string>} - Resolves with the assistant's reply text.
  */
-export async function callChatGPT(apiKey, prompt, model = "gpt-4o") {
+export async function callChatGPT(apiKey, prompt, model = "gpt-5-mini")
   if (!apiKey) {
     throw new Error("API 키가 필요합니다. API 키를 입력하세요.");
   }
@@ -61,5 +61,6 @@ export async function callChatGPT(apiKey, prompt, model = "gpt-4o") {
   } catch (err) {
     // Re‑throw any network or parsing errors with a user‑friendly message
     throw new Error(`ChatGPT 호출 실패: ${err.message}`);
-  }
-}
+ }
+
+window.callChatGPT = callChatGPT;
