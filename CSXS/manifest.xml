@@ -2,7 +2,7 @@
 <!--
   CEP manifest for an advanced Adobe panel that integrates
   both ChatGPT API calls and MCP server connectivity.  This
-  extension targets Premiere Pro and After Effects simultaneously.
+  extension targets Premiere Pro and After Effects simultaneously.
   It defines a single panel entry point that loads the HTML UI.
 
   Change the ExtensionBundleId and Extension Id values to suit your
@@ -18,10 +18,20 @@
   </ExtensionList>
   <ExecutionEnvironment>
     <HostList>
-      <!-- After Effects (AEFT) versions 17 and later -->
-      <Host Name="AEFT" Version="[17.0,99.0]" />
-      <!-- Premiere Pro (PPRO) versions 15 and later -->
-      <Host Name="PPRO" Version="[15.0,99.0]" />
+      <!-- After Effects (AEFT) versions 25 and later -->
+      <Host Name="AEFT" Version="[25.0,99.0]" />
+      <!-- Premiere Pro (PPRO) versions 25 and later -->
+      <Host Name="PPRO" Version="[25.0,99.0]" />
+      <!-- Photoshop (PHXS) versions 27 and later -->
+      <Host Name="PHXS" Version="[27.0,99.0]" />
+      <!-- Acrobat (ACRO) versions 25 and later -->
+      <Host Name="ACRO" Version="[25.0,99.0]" />
+      <!-- InDesign (IDSN) versions 21 and later -->
+      <Host Name="IDSN" Version="[21.0,99.0]" />
+      <!-- Audition (AUDT) versions 25 and later -->
+      <Host Name="AUDT" Version="[25.0,99.0]" />
+      <!-- Media Encoder (AME) versions 25 and later -->
+      <Host Name="AME" Version="[25.0,99.0]" />
     </HostList>
     <LocaleList>
       <Locale Code="All" />
@@ -39,7 +49,7 @@
                paths are resolved from the extension root. -->
           <MainPath>html/index.html</MainPath>
           <!-- Path to the ExtendScript file containing functions that run
-               inside After Effects or Premiere Pro. -->
+               inside After Effects or Premiere Pro. -->
           <ScriptPath>jsx/hostscript.jsx</ScriptPath>
         </Resources>
         <Lifecycle>
