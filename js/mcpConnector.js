@@ -1,60 +1,50 @@
 /*
  * mcpConnector.js
  *
- * This module provides a simple helper for connecting to an MCP server using
- * Server‑Sent Events (SSE).  The caller specifies the URL of the MCP
- * endpoint and supplies callback functions to handle incoming messages and
- * errors.  The function returns a closure that can be invoked to close
- * the connection when no longer needed.
+ * SSE 기반 "연결 헬퍼".
+ * 현재 index.html/app.js에서는 직접 사용하지 않지만,
+ * 일반 스크립트 로딩 환경(CEP)에서도 동작하도록 ESM export를 제거했습니다.
  */
 
-/**
- * Connect to an MCP server via SSE.
- *
- * @param {object} options - Connection options.
- * @param {string} options.url - The MCP SSE endpoint.  For example:
- *   "http://localhost:3000/sse".
- * @param {string} [options.apiKey] - Optional MCP API key.
- * @param {string} [options.accessToken] - Optional OAuth access token.
- * @param {string} [options.clientId] - Optional OAuth client ID (for logging).
- * @param {function(string): void} onMessage - Callback invoked for each
- *   message received.  Receives the message data as a string.
- * @param {function(ErrorEvent): void} onError - Callback invoked on errors.
- * @returns {function(): void} - A function that closes the connection.
- */
-export function connectToMCP(options, onMessage, onError) {
-  if (!options || !options.url) {
-    throw new Error("MCP 서버 URL을 지정하세요.");
-  }
-  const { url, apiKey, accessToken, clientId } = options;
-  const urlObject = new URL(url);
-  if (apiKey) {
-    urlObject.searchParams.set('mcp_api_key', apiKey);
-  }
-  if (accessToken) {
-    urlObject.searchParams.set('access_token', accessToken);
-  }
-  if (clientId) {
-    urlObject.searchParams.set('client_id', clientId);
-  }
-  let eventSource;
-  try { eventSource = new EventSource(urlObject.toString());
-  } catch (err) {
-    throw new Error(`SSE 연결 실패: ${err.message}`);
-  }
-  eventSource.onmessage = (event) => {
-    if (onMessage) {
-      onMessage(event.data);
+(function () {
+  /**
+   * Connect to an MCP server via SSE.
+   *
+   * @param {object} options
+   * @param {string} options.url SSE endpoint URL
+   * @param {function(string):void} onMessage
+   * @param {function(Error):void} onError
+   * @returns {function():void} close function
+   */
+  function connectToMCP(options, onMessage, onError) {
+    if (!options || !options.url) {
+      throw new Error('MCP 서버 URL을 지정하세요.');
     }
-  };
-  eventSource.onerror = (err) => {
-    if (onError) {
-      onError(err);
+
+    var urlObject = new URL(options.url);
+    if (options.apiKey) urlObject.searchParams.set('mcp_api_key', options.apiKey);
+    if (options.accessToken) urlObject.searchParams.set('access_token', options.accessToken);
+    if (options.clientId) urlObject.searchParams.set('client_id', options.clientId);
+
+    var eventSource;
+    try {
+      eventSource = new EventSource(urlObject.toString());
+    } catch (err) {
+      throw new Error('SSE 연결 실패: ' + err.message);
     }
-  };
-  return () => {
-    if (eventSource) {
-      eventSource.close();
-    }
-  };
-}
+
+    eventSource.onmessage = function (event) {
+      if (onMessage) onMessage(event.data);
+    };
+
+    eventSource.onerror = function (err) {
+      if (onError) onError(err);
+    };
+
+    return function () {
+      if (eventSource) eventSource.close();
+    };
+  }
+
+  window.connectToMCP = connectToMCP;
+})();

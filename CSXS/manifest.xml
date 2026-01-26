@@ -1,72 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  CEP manifest for an advanced Adobe panel that integrates
-  both ChatGPT API calls and MCP server connectivity.  This
-  extension targets Premiere Pro and After Effects simultaneously.
-  It defines a single panel entry point that loads the HTML UI.
-
-  Change the ExtensionBundleId and Extension Id values to suit your
-  organisation. They must remain unique within your system and may
-  contain only letters, numbers and dots (no spaces).
--->
 <ExtensionManifest Version="7.0"
-    ExtensionBundleId="com.example.mcpgptpanel"
-    ExtensionBundleName="어도비 cpe 및 api"
-    ExtensionBundleVersion="1.0.0">
+  ExtensionBundleId="com.example.mcpgptpanel"
+  ExtensionBundleName="어도비 cpe 및 api"
+  ExtensionBundleVersion="1.0.0">
   <ExtensionList>
     <Extension Id="com.example.mcpgptpanel.panel" Version="1.0.0" />
   </ExtensionList>
+
   <ExecutionEnvironment>
     <HostList>
-      <!-- After Effects (AEFT) versions 25 and later -->
-      <Host Name="AEFT" Version="[25.0,99.0]" />
-      <!-- Premiere Pro (PPRO) versions 25 and later -->
       <Host Name="PPRO" Version="[25.0,99.0]" />
-      <!-- Photoshop (PHXS) versions 27 and later -->
+      <Host Name="AEFT" Version="[25.0,99.0]" />
       <Host Name="PHXS" Version="[27.0,99.0]" />
-      <!-- Acrobat (ACRO) versions 25 and later -->
-      <Host Name="ACRO" Version="[25.0,99.0]" />
-      <!-- InDesign (IDSN) versions 21 and later -->
       <Host Name="IDSN" Version="[21.0,99.0]" />
-      <!-- Audition (AUDT) versions 25 and later -->
+      <Host Name="ACRO" Version="[25.0,99.0]" />
+      <Host Name="AME"  Version="[25.0,99.0]" />
       <Host Name="AUDT" Version="[25.0,99.0]" />
-      <!-- Media Encoder (AME) versions 25 and later -->
-      <Host Name="AME" Version="[25.0,99.0]" />
     </HostList>
+
     <LocaleList>
       <Locale Code="All" />
     </LocaleList>
-    <!-- CSXS runtime version 12.0 targets CEP 12 (CC 2025). -->
+
     <RequiredRuntimeList>
-      <RequiredRuntime Name="CSXS" Version="12.0" />
+      <!-- CEP 12 (Premiere Pro 2025 / After Effects 2025) -->
+      <RequiredRuntime Name="CSXS" Version="[12.0,99.0]" />
     </RequiredRuntimeList>
   </ExecutionEnvironment>
+
   <DispatchInfoList>
     <Extension Id="com.example.mcpgptpanel.panel">
       <DispatchInfo>
         <Resources>
-          <!-- Path to the HTML file used for the panel UI.  Relative
-               paths are resolved from the extension root. -->
-          <MainPath>html/index.html</MainPath>
-          <!-- Path to the ExtendScript file containing functions that run
-               inside After Effects or Premiere Pro. -->
-          <ScriptPath>jsx/hostscript.jsx</ScriptPath>
+          <MainPath>./html/index.html</MainPath>
+          <ScriptPath>./jsx/hostscript.jsx</ScriptPath>
+        
+          <CEFCommandLine>
+            <Parameter>--enable-nodejs</Parameter>
+            <Parameter>--mixed-context</Parameter>
+          </CEFCommandLine>
         </Resources>
+
         <Lifecycle>
-          <!-- The panel will open automatically when the host application starts. -->
           <AutoVisible>true</AutoVisible>
         </Lifecycle>
-        <CEFCommandLine>
-          <Parameter>--enable-nodejs</Parameter>
-        </CEFCommandLine>
+
         <UI>
           <Type>Panel</Type>
-          <!-- Name shown in the Window > Extensions menu. -->
           <Menu>어도비 cpe 및 api</Menu>
           <Geometry>
             <Size>
               <Width>500</Width>
-              <Height>350</Height>
+              <Height>700</Height>
             </Size>
           </Geometry>
         </UI>

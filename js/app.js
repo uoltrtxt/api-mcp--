@@ -118,7 +118,11 @@ function startMcpServer() {
     updateMcpServerStatus('실행 중');
     return;
   }
-  const nodeRequire = window.cep_node && window.cep_node.require ? window.cep_node.require : null;
+  const nodeRequire = (globalThis.cep_node && globalThis.cep_node.require)
+    ? globalThis.cep_node.require
+    : (window.cep_node && window.cep_node.require)
+      ? window.cep_node.require
+      : null;
   if (!nodeRequire) {
     appendMessage('system', 'MCP 서버를 시작할 수 없습니다. (CEP Node 사용 불가)');
     updateMcpServerStatus('실행 실패');
